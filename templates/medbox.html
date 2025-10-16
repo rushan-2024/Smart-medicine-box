@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ code_obj.name or 'MedBox' }}{% endblock %}
+{% block content %}
+  <div class="card shadow-sm p-3">
+    <div class="d-flex justify-content-between">
+      <h3>{{ code_obj.name or 'MedBox' }}</h3>
+      <div class="text-muted">Code: {{ code_obj.code }}</div>
+    </div>
+
+    {% if current_user.role == 'doctor' and code_obj.created_by == current_user.id %}
+      <hr>
+      <form method="POST" class="row g-2 align-items-center">
+        <div class="col-auto">
+          <input class="form-control" name="new_name" placeholder="Rename MedBox">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-warning" name="rename" type="submit">Rename</button>
+        </div>
+      </form>
+
+      <hr>
+      <h5>Add Medicine</h5>
+      <form method="POST" class="row g-2">
+        <div class="col-md-6">
+          <input class="form-control" name="med_name" placeholder="Medicine name" required>
+        </div>
+        <div class="col-md-3">
+          <input class="form-control" type="time" name="med_time" required>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-success" name="add_medicine" type="submit">Add</button>
+        </div>
+      </form>
+    {% else %}
+      <p class="text-muted">You can view this MedBox. Only the creating doctor can edit it.</p>
+    {% endif %}
+
+    <hr>
+    <h5>Medicines</h5>
+    {% if medicines %}
+      <ul class="list-group">
+        {% for m in medicines %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>{{ m.name }}</div>
+            <div class="text-muted">{{ m.time }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No medicines scheduled yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

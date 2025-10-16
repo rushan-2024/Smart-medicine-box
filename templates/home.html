@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Home - MedicareApp{% endblock %}
+{% block content %}
+  <div class="p-4 bg-white rounded shadow-sm">
+    <h1>Welcome to MedicareApp</h1>
+    <p class="lead">Create medboxes and schedule medicines. Doctors manage schedules; patients view them with a code.</p>
+    {% if not current_user.is_authenticated %}
+      <a href="{{ url_for('signup') }}" class="btn btn-primary">Sign up</a>
+      <a href="{{ url_for('login') }}" class="btn btn-outline-primary ms-2">Login</a>
+    {% endif %}
+  </div>
+{% endblock %}
