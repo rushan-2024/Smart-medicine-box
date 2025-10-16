@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Medicare{% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card shadow-sm p-3">
+        <h4>Access MedBox by Code</h4>
+        <form method="POST">
+          <div class="input-group mb-3">
+            <input class="form-control" name="box_code" placeholder="Enter MedBox code" required>
+            <button class="btn btn-primary" name="join_box" type="submit">Join</button>
+          </div>
+        </form>
+
+        {% if current_user.role == 'doctor' %}
+          <hr>
+          <h4>Create a MedBox (Doctor)</h4>
+          <form method="POST">
+            <div class="input-group mb-3">
+              <input class="form-control" name="box_name" placeholder="New MedBox name" required>
+              <button class="btn btn-success" name="create_box" type="submit">Create</button>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+
+      <div class="card mt-3 shadow-sm p-3">
+        <h5>Your MedBoxes</h5>
+        {% if codes %}
+          <ul class="list-group">
+            {% for c in codes %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ c.name or 'MedBox' }}</strong>
+                  <div class="small text-muted">Code: {{ c.code }}</div>
+                </div>
+                <a href="{{ url_for('medbox', code=c.code) }}" class="btn btn-outline-primary btn-sm">Open</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No MedBoxes. Doctors can create them here.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
